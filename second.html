@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>body {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        
+        
+      }
+      
+      .container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+      }
+      
+      .fields {
+        row-gap: 20px;
+        width: 30vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: space-between;
+        justify-content: center;
+      }
+      
+      .history {
+        width: 70vw;
+        padding: 2em;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        
+      }
+      
+      .button {
+        margin-top: 1em;
+        padding: 8px;
+        border: 1px solid black;
+        border-radius: 10px;
+          
+      }</style>
+</head>
+<body>
+    <div class="container">
+        <div class="fields">
+          <label for="name"> Sender
+            <input id="name" type="text" />
+          </label>
+          <label for="content"> Content
+            <input id="mesage" type="text" />
+          </label>
+          <button class="button">Send</button>
+        </div>
+        <div class="history"></div>
+      </div>
+</body>
+<script>
+    const userInp = document.getElementById("name");
+const mesageInp = document.getElementById("mesage");
+const Button = document.querySelector(".button");
+
+class Mesage {
+  constructor(name, mesage) {
+    this.name = name;
+    this.time = gettime();
+    this.mesage = mesage;
+  }
+
+  toString() {
+    return `${this.time} ${this.name}: ${this.mesage}`;
+  }
+
+  toHtml() {
+    return `<p>${this.time} ${this.name}: ${this.mesage}</p></b>`;
+  }
+}
+
+class Mesenger {
+  constructor() {
+    this.history = [];
+    this.historyelement = document.querySelector(`.history`);
+  }
+
+  show_history() {
+    this.history.forEach((mesage) => {
+      console.log(mesage.toString());
+    });
+  }
+
+  send(name, text) {
+    const mesage = new Mesage(name, text);
+    this.history.push(mesage);
+    const p = document.createElement("p");
+    p.innerHTML = mesage.toHtml();
+    this.historyelement.appendChild(p);
+  }
+}
+
+function gettime() {
+  let now = new Date();
+  return `${now.getHours()}:${now.getMinutes()}`;
+}
+
+let mesenger = new Mesenger("mesenger");
+
+Button.addEventListener("click", () => {
+  const name = userInp.value;
+  const mesage = mesageInp.value;
+
+  mesenger.send(name, mesage);
+  userInp.value = "";
+  mesageInp.value = "";
+});
+
+</script>
+</html>
